@@ -1,25 +1,40 @@
 {%extends 'all-news/base.html'%}
+{% load bootstrap3 %}
 {% block content %}
 {{block.super}}
 <div class="container">
 
-    <!-- Looping through news   -->
-    {%for news_item in news%}
-    <div class="row">
-        <!-- displaying News articles -->
-        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-          <h2 class="text-center"> {{ news_item.title }} </h2>
-          <img src="{{news_item.article_image.url}}" class="img-responsive" alt="Image">
-         
-        </div>
-        <br><br><br><br><br>
+
+  <!-- Looping through news   -->
+  <div class="container-fluid">
+
+      <form  action="{%url 'newsToday'%}" method="post">
+        {%csrf_token%}
+    
+        {% bootstrap_form letterForm layout='inline' %}
+        <input type="submit" value="Subscribe">
+      </form>
+    
+    </div>
+  {%for news_item in news%}
+  <div class="row">
+    <!-- displaying News articles -->
+    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+      <h2 class="text-center"> {{ news_item.title }} </h2>
+      <img src="{{news_item.article_image.url}}" class="img-responsive" alt="Image">
+
+    </div>
+    <br><br><br><br><br>
     <p class="text-center"> {{ news_item.post }} </p>
 
-      </div>
-      {% empty %}
-      <div class="row">
-        <h2 class="text-center">There No News Items</h2>
-      </div>
+  </div>
+  {% empty %}
+  <div class="row">
+    <h2 class="text-center">There No News Items</h2>
+  </div>
 </div>
-      {% endfor %}
+{% endfor %}
+{% endblock %}
+{% block scripts %} {{block.super}}
+  <script type="text/javascript" src="{%static 'js/newsletter.js'%}"></script>
 {% endblock %}
